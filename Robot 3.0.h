@@ -379,6 +379,7 @@ namespace CppCLRWinformsProjekt {
 			bunifuImageButton1->Image = Drawing::Image::FromFile("exitbutton.png");
 			pictureBox1->Image = Drawing::Image::FromFile("ananke2.png");
 			BackgroundImage = Drawing::Image::FromFile("anankebg.png");
+
 		}
 		catch (Exception^ ex)
 		{
