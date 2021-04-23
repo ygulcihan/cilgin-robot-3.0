@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Çılgın Robot 3.0", "Çılgın Robot 3.0.vcxproj", "{27A5B092-76F6-42B4-B427-DC1025C491BD}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup Test", "..\Setup Test\Setup Test.vdproj", "{536768B3-DA31-4078-B0BC-A7AB151DF588}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -13,14 +15,18 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{27A5B092-76F6-42B4-B427-DC1025C491BD}.Debug|x64.ActiveCfg = Debug|x64
-		{27A5B092-76F6-42B4-B427-DC1025C491BD}.Debug|x64.Build.0 = Debug|x64
+		{27A5B092-76F6-42B4-B427-DC1025C491BD}.Debug|x64.ActiveCfg = Release|x64
+		{27A5B092-76F6-42B4-B427-DC1025C491BD}.Debug|x64.Build.0 = Release|x64
 		{27A5B092-76F6-42B4-B427-DC1025C491BD}.Debug|x86.ActiveCfg = Debug|Win32
 		{27A5B092-76F6-42B4-B427-DC1025C491BD}.Debug|x86.Build.0 = Debug|Win32
 		{27A5B092-76F6-42B4-B427-DC1025C491BD}.Release|x64.ActiveCfg = Release|x64
 		{27A5B092-76F6-42B4-B427-DC1025C491BD}.Release|x64.Build.0 = Release|x64
 		{27A5B092-76F6-42B4-B427-DC1025C491BD}.Release|x86.ActiveCfg = Release|Win32
 		{27A5B092-76F6-42B4-B427-DC1025C491BD}.Release|x86.Build.0 = Release|Win32
+		{536768B3-DA31-4078-B0BC-A7AB151DF588}.Debug|x64.ActiveCfg = Debug
+		{536768B3-DA31-4078-B0BC-A7AB151DF588}.Debug|x86.ActiveCfg = Debug
+		{536768B3-DA31-4078-B0BC-A7AB151DF588}.Release|x64.ActiveCfg = Release
+		{536768B3-DA31-4078-B0BC-A7AB151DF588}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
