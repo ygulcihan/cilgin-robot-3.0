@@ -23,6 +23,7 @@ namespace CppCLRWinformsProjekt {
 		bool camOn = false;
 		String^ camLink;
 		int camCount;
+		bool keyControl = false;
 
 
 
@@ -40,7 +41,16 @@ namespace CppCLRWinformsProjekt {
 		   Emgu::CV::Capture^ cap;
 	private: Bunifu::Framework::UI::BunifuImageButton^ bunifuImageButton1;
 	private: Bunifu::Framework::UI::BunifuDragControl^ bunifuDragControl1;
-	private: Bunifu::Framework::UI::BunifuCircleProgressbar^ bunifuCircleProgressbar1;
+
+	private: System::Windows::Forms::TextBox^ textBox4;
+	private: Bunifu::Framework::UI::BunifuiOSSwitch^ keyboardControlSwitch;
+	private: Bunifu::Framework::UI::BunifuiOSSwitch^ camSwitch;
+
+
+
+
+
+
 
 
 
@@ -78,11 +88,6 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 
 
-
-
-
-
-
 	private: System::ComponentModel::IContainer^ components;
 	protected:
 
@@ -114,7 +119,9 @@ namespace CppCLRWinformsProjekt {
 			this->bunifuElipse1 = (gcnew Bunifu::Framework::UI::BunifuElipse(this->components));
 			this->bunifuImageButton1 = (gcnew Bunifu::Framework::UI::BunifuImageButton());
 			this->bunifuDragControl1 = (gcnew Bunifu::Framework::UI::BunifuDragControl(this->components));
-			this->bunifuCircleProgressbar1 = (gcnew Bunifu::Framework::UI::BunifuCircleProgressbar());
+			this->keyboardControlSwitch = (gcnew Bunifu::Framework::UI::BunifuiOSSwitch());
+			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
+			this->camSwitch = (gcnew Bunifu::Framework::UI::BunifuiOSSwitch());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->groupBox2->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -163,13 +170,13 @@ namespace CppCLRWinformsProjekt {
 			this->textBox1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
 				static_cast<System::Int32>(static_cast<System::Byte>(250)));
 			this->textBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox1->Enabled = false;
 			this->textBox1->ForeColor = System::Drawing::Color::Black;
 			this->textBox1->Location = System::Drawing::Point(6, 11);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(86, 13);
 			this->textBox1->TabIndex = 3;
 			this->textBox1->Text = L"Select Com Port:";
-			this->textBox1->TextChanged += gcnew System::EventHandler(this, &Form1::textBox1_TextChanged);
 			// 
 			// textBox2
 			// 
@@ -258,6 +265,7 @@ namespace CppCLRWinformsProjekt {
 			this->textBox3->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
 				static_cast<System::Int32>(static_cast<System::Byte>(250)));
 			this->textBox3->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox3->Enabled = false;
 			this->textBox3->ForeColor = System::Drawing::Color::Black;
 			this->textBox3->Location = System::Drawing::Point(8, 10);
 			this->textBox3->Name = L"textBox3";
@@ -287,6 +295,7 @@ namespace CppCLRWinformsProjekt {
 			// bunifuImageButton1
 			// 
 			this->bunifuImageButton1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->bunifuImageButton1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"bunifuImageButton1.Image")));
 			this->bunifuImageButton1->ImageActive = nullptr;
 			this->bunifuImageButton1->Location = System::Drawing::Point(592, 12);
 			this->bunifuImageButton1->Name = L"bunifuImageButton1";
@@ -304,26 +313,49 @@ namespace CppCLRWinformsProjekt {
 			this->bunifuDragControl1->TargetControl = this;
 			this->bunifuDragControl1->Vertical = true;
 			// 
-			// bunifuCircleProgressbar1
+			// keyboardControlSwitch
 			// 
-			this->bunifuCircleProgressbar1->animated = false;
-			this->bunifuCircleProgressbar1->animationIterval = 5;
-			this->bunifuCircleProgressbar1->animationSpeed = 300;
-			this->bunifuCircleProgressbar1->BackColor = System::Drawing::Color::Transparent;
-			this->bunifuCircleProgressbar1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 26.25F));
-			this->bunifuCircleProgressbar1->ForeColor = System::Drawing::Color::SeaGreen;
-			this->bunifuCircleProgressbar1->LabelVisible = true;
-			this->bunifuCircleProgressbar1->LineProgressThickness = 8;
-			this->bunifuCircleProgressbar1->LineThickness = 5;
-			this->bunifuCircleProgressbar1->Location = System::Drawing::Point(39, 180);
-			this->bunifuCircleProgressbar1->Margin = System::Windows::Forms::Padding(10, 9, 10, 9);
-			this->bunifuCircleProgressbar1->MaxValue = 100;
-			this->bunifuCircleProgressbar1->Name = L"bunifuCircleProgressbar1";
-			this->bunifuCircleProgressbar1->ProgressBackColor = System::Drawing::Color::Gainsboro;
-			this->bunifuCircleProgressbar1->ProgressColor = System::Drawing::Color::SeaGreen;
-			this->bunifuCircleProgressbar1->Size = System::Drawing::Size(135, 135);
-			this->bunifuCircleProgressbar1->TabIndex = 13;
-			this->bunifuCircleProgressbar1->Value = 0;
+			this->keyboardControlSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->keyboardControlSwitch->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"keyboardControlSwitch.BackgroundImage")));
+			this->keyboardControlSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->keyboardControlSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->keyboardControlSwitch->Location = System::Drawing::Point(179, 7);
+			this->keyboardControlSwitch->Name = L"keyboardControlSwitch";
+			this->keyboardControlSwitch->OffColor = System::Drawing::Color::Gray;
+			this->keyboardControlSwitch->OnColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(71)),
+				static_cast<System::Int32>(static_cast<System::Byte>(202)), static_cast<System::Int32>(static_cast<System::Byte>(94)));
+			this->keyboardControlSwitch->Size = System::Drawing::Size(35, 20);
+			this->keyboardControlSwitch->TabIndex = 13;
+			this->keyboardControlSwitch->Value = false;
+			this->keyboardControlSwitch->OnValueChange += gcnew System::EventHandler(this, &Form1::keyboardControlSwitch_OnValueChange);
+			// 
+			// textBox4
+			// 
+			this->textBox4->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
+				static_cast<System::Int32>(static_cast<System::Byte>(250)));
+			this->textBox4->Enabled = false;
+			this->textBox4->Location = System::Drawing::Point(87, 7);
+			this->textBox4->Name = L"textBox4";
+			this->textBox4->Size = System::Drawing::Size(86, 20);
+			this->textBox4->TabIndex = 14;
+			this->textBox4->Text = L"Manual Control";
+			this->textBox4->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// camSwitch
+			// 
+			this->camSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->camSwitch->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"camSwitch.BackgroundImage")));
+			this->camSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->camSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->camSwitch->Location = System::Drawing::Point(179, 185);
+			this->camSwitch->Name = L"camSwitch";
+			this->camSwitch->OffColor = System::Drawing::Color::Gray;
+			this->camSwitch->OnColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(71)), static_cast<System::Int32>(static_cast<System::Byte>(202)),
+				static_cast<System::Int32>(static_cast<System::Byte>(94)));
+			this->camSwitch->Size = System::Drawing::Size(35, 20);
+			this->camSwitch->TabIndex = 15;
+			this->camSwitch->Value = false;
+			this->camSwitch->OnValueChange += gcnew System::EventHandler(this, &Form1::camSwitch_OnValueChange);
 			// 
 			// Form1
 			// 
@@ -332,7 +364,9 @@ namespace CppCLRWinformsProjekt {
 			this->BackColor = System::Drawing::SystemColors::Desktop;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(629, 358);
-			this->Controls->Add(this->bunifuCircleProgressbar1);
+			this->Controls->Add(this->camSwitch);
+			this->Controls->Add(this->textBox4);
+			this->Controls->Add(this->keyboardControlSwitch);
 			this->Controls->Add(this->bunifuImageButton1);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
@@ -344,6 +378,7 @@ namespace CppCLRWinformsProjekt {
 			this->ShowIcon = false;
 			this->Text = L"Çılgın Robot 3.0";
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::Form1_KeyDown);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
@@ -351,6 +386,7 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bunifuImageButton1))->EndInit();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -381,7 +417,7 @@ namespace CppCLRWinformsProjekt {
 			BackgroundImage = Drawing::Image::FromFile("anankebg.png");
 
 		}
-		catch (Exception^ ex)
+		catch (...)
 		{
 			
 		}
@@ -438,12 +474,9 @@ namespace CppCLRWinformsProjekt {
 		}
 	}
 
-
 	   void OnImageGrabbed(System::Object^ sender, System::EventArgs^ e);
-private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void pictureBox2_Click(System::Object^ sender, System::EventArgs^ e) {
-}
+
+
 private: System::Void camStopBtn_Click(System::Object^ sender, System::EventArgs^ e) 
 {
 	camOn = false;
@@ -463,6 +496,95 @@ private: System::Void linkBox_SelectedIndexChanged(System::Object^ sender, Syste
 private: System::Void bunifuImageButton1_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->Close();
 }
+private: System::Void Form1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) 
+{
+	if (keyControl)
+	{
+
+		if (e->KeyValue == (char)Keys::Up || e->KeyValue == (char)Keys::W)
+		{
+			serialPort1->Open();
+			serialPort1->WriteLine("forward");
+			serialPort1->Close();
+		}
+
+		else if (e->KeyValue == (char)Keys::Down || e->KeyValue == (char)Keys::S)
+		{
+			serialPort1->Open();
+			serialPort1->WriteLine("reverse");
+			serialPort1->Close();
+		}
+
+		else if (e->KeyValue == (char)Keys::Left || e->KeyValue == (char)Keys::A)
+		{
+			serialPort1->Open();
+			serialPort1->WriteLine("left");
+			serialPort1->Close();
+		}
+
+		else if (e->KeyValue == (char)Keys::Right || e->KeyValue == (char)Keys::D)
+		{
+			serialPort1->Open();
+			serialPort1->WriteLine("right");
+			serialPort1->Close();
+		}
+
+	}
+}
+
+private: System::Void keyboardControlSwitch_OnValueChange(System::Object^ sender, System::EventArgs^ e) 
+{
+	if (keyboardControlSwitch->Value == true)
+	{
+		keyControl = true;
+	}
+
+	else
+	{
+		keyControl = false;
+	}
+}
+
+private: System::Void camSwitch_OnValueChange(System::Object^ sender, System::EventArgs^ e) 
+{
+	camOn != camOn;
+
+	if (camOn)
+	{
+		camStart();
+	}
+	else
+	{
+		camStop();
+	}
+}
+
+	   void camStart()
+	   {
+		   if (camCount < 1)
+		   {
+			   camLink = "http://" + linkBox->Text + "/mjpeg/1";
+			   cap = gcnew Emgu::CV::Capture(camLink);
+			   cap->ImageGrabbed += gcnew System::EventHandler(this, &CppCLRWinformsProjekt::Form1::OnImageGrabbed);
+			   cap->Start();
+			   linkBox->Enabled = false;
+			   camOn = true;
+			   camCount++;
+		   }
+		   else
+		   {
+			   camOn = true;
+			   cap->Start();
+		   }
+	   }
+
+	   void camStop()
+	   {
+		   camOn = false;
+		   cap->Stop();
+		   pictureBox1->Image = Drawing::Image::FromFile("ananke2.png");
+	   }
+
 };
 }
 
