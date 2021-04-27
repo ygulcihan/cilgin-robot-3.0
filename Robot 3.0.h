@@ -295,6 +295,7 @@ namespace CppCLRWinformsProjekt {
 			// bunifuImageButton1
 			// 
 			this->bunifuImageButton1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->bunifuImageButton1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"bunifuImageButton1.Image")));
 			this->bunifuImageButton1->ImageActive = nullptr;
 			this->bunifuImageButton1->Location = System::Drawing::Point(592, 12);
 			this->bunifuImageButton1->Name = L"bunifuImageButton1";
@@ -315,6 +316,7 @@ namespace CppCLRWinformsProjekt {
 			// keyboardControlSwitch
 			// 
 			this->keyboardControlSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->keyboardControlSwitch->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"keyboardControlSwitch.BackgroundImage")));
 			this->keyboardControlSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->keyboardControlSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->keyboardControlSwitch->Location = System::Drawing::Point(179, 7);
@@ -327,6 +329,7 @@ namespace CppCLRWinformsProjekt {
 			this->keyboardControlSwitch->Value = false;
 			this->keyboardControlSwitch->OnValueChange += gcnew System::EventHandler(this, &Form1::keyboardControlSwitch_OnValueChange);
 			this->keyboardControlSwitch->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::keyboardControlSwitch_KeyDown);
+			this->keyboardControlSwitch->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::keyboardControlSwitch_KeyUp);
 			this->keyboardControlSwitch->Leave += gcnew System::EventHandler(this, &Form1::keyboardControlSwitch_Leave);
 			// 
 			// textBox4
@@ -344,6 +347,7 @@ namespace CppCLRWinformsProjekt {
 			// camSwitch
 			// 
 			this->camSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->camSwitch->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"camSwitch.BackgroundImage")));
 			this->camSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->camSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->camSwitch->Location = System::Drawing::Point(179, 185);
@@ -590,6 +594,13 @@ private: System::Void keyboardControlSwitch_KeyDown(System::Object^ sender, Syst
 private: System::Void keyboardControlSwitch_Leave(System::Object^ sender, System::EventArgs^ e) 
 {
 	keyboardControlSwitch->Value = false;
+}
+
+private: System::Void keyboardControlSwitch_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) 
+{
+	serialPort1->Open();
+	serialPort1->WriteLine("stop");
+	serialPort1->Close();
 }
 
 };
