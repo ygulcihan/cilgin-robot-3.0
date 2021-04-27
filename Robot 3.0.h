@@ -29,12 +29,12 @@ namespace CppCLRWinformsProjekt {
 
 	private: System::Windows::Forms::GroupBox^ groupBox2;
 
-	private: System::Windows::Forms::Button^ camStopBtn;
 
-	private: System::Windows::Forms::Button^ CamBtn;
+
+
 	private: System::Windows::Forms::ComboBox^ linkBox;
-	private: System::Windows::Forms::TextBox^ textBox3;
-	private: System::Windows::Forms::GroupBox^ groupBox1;
+
+
 	private: Bunifu::Framework::UI::BunifuElipse^ bunifuElipse1;
 
 
@@ -45,6 +45,9 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::TextBox^ textBox4;
 	private: Bunifu::Framework::UI::BunifuiOSSwitch^ keyboardControlSwitch;
 	private: Bunifu::Framework::UI::BunifuiOSSwitch^ camSwitch;
+	private: System::Windows::Forms::TextBox^ textBox3;
+	private: Bunifu::Framework::UI::BunifuiOSSwitch^ ledSwitch;
+	private: System::Windows::Forms::GroupBox^ groupBox1;
 
 
 
@@ -77,8 +80,8 @@ namespace CppCLRWinformsProjekt {
 			}
 		}
 	private: System::Windows::Forms::ComboBox^ PortBox;
-	private: System::Windows::Forms::Button^ OnBtn;
-	private: System::Windows::Forms::Button^ OffBtn;
+
+
 
 
 	private: System::IO::Ports::SerialPort^ serialPort1;
@@ -104,28 +107,25 @@ namespace CppCLRWinformsProjekt {
 			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(Form1::typeid));
 			this->PortBox = (gcnew System::Windows::Forms::ComboBox());
-			this->OnBtn = (gcnew System::Windows::Forms::Button());
-			this->OffBtn = (gcnew System::Windows::Forms::Button());
 			this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
-			this->camStopBtn = (gcnew System::Windows::Forms::Button());
-			this->CamBtn = (gcnew System::Windows::Forms::Button());
+			this->ledSwitch = (gcnew Bunifu::Framework::UI::BunifuiOSSwitch());
+			this->keyboardControlSwitch = (gcnew Bunifu::Framework::UI::BunifuiOSSwitch());
+			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
 			this->linkBox = (gcnew System::Windows::Forms::ComboBox());
-			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
-			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->bunifuElipse1 = (gcnew Bunifu::Framework::UI::BunifuElipse(this->components));
 			this->bunifuImageButton1 = (gcnew Bunifu::Framework::UI::BunifuImageButton());
 			this->bunifuDragControl1 = (gcnew Bunifu::Framework::UI::BunifuDragControl(this->components));
-			this->keyboardControlSwitch = (gcnew Bunifu::Framework::UI::BunifuiOSSwitch());
-			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
 			this->camSwitch = (gcnew Bunifu::Framework::UI::BunifuiOSSwitch());
+			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->groupBox2->SuspendLayout();
-			this->groupBox1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bunifuImageButton1))->BeginInit();
+			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// PortBox
@@ -138,32 +138,6 @@ namespace CppCLRWinformsProjekt {
 			this->PortBox->Size = System::Drawing::Size(109, 21);
 			this->PortBox->TabIndex = 0;
 			this->PortBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::comboBox1_SelectedIndexChanged);
-			// 
-			// OnBtn
-			// 
-			this->OnBtn->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
-				static_cast<System::Int32>(static_cast<System::Byte>(250)));
-			this->OnBtn->ForeColor = System::Drawing::Color::Black;
-			this->OnBtn->Location = System::Drawing::Point(41, 32);
-			this->OnBtn->Name = L"OnBtn";
-			this->OnBtn->Size = System::Drawing::Size(75, 23);
-			this->OnBtn->TabIndex = 1;
-			this->OnBtn->Text = L"On";
-			this->OnBtn->UseVisualStyleBackColor = false;
-			this->OnBtn->Click += gcnew System::EventHandler(this, &Form1::OnBtn_Click);
-			// 
-			// OffBtn
-			// 
-			this->OffBtn->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
-				static_cast<System::Int32>(static_cast<System::Byte>(250)));
-			this->OffBtn->ForeColor = System::Drawing::Color::Black;
-			this->OffBtn->Location = System::Drawing::Point(124, 32);
-			this->OffBtn->Name = L"OffBtn";
-			this->OffBtn->Size = System::Drawing::Size(75, 23);
-			this->OffBtn->TabIndex = 2;
-			this->OffBtn->Text = L"Off";
-			this->OffBtn->UseVisualStyleBackColor = false;
-			this->OffBtn->Click += gcnew System::EventHandler(this, &Form1::OffBtn_Click);
 			// 
 			// textBox1
 			// 
@@ -184,7 +158,7 @@ namespace CppCLRWinformsProjekt {
 				static_cast<System::Int32>(static_cast<System::Byte>(250)));
 			this->textBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->textBox2->ForeColor = System::Drawing::Color::Black;
-			this->textBox2->Location = System::Drawing::Point(6, 37);
+			this->textBox2->Location = System::Drawing::Point(128, 42);
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->Size = System::Drawing::Size(29, 13);
 			this->textBox2->TabIndex = 4;
@@ -193,10 +167,10 @@ namespace CppCLRWinformsProjekt {
 			// pictureBox1
 			// 
 			this->pictureBox1->Dock = System::Windows::Forms::DockStyle::Right;
-			this->pictureBox1->Location = System::Drawing::Point(232, 0);
+			this->pictureBox1->Location = System::Drawing::Point(233, 0);
 			this->pictureBox1->Margin = System::Windows::Forms::Padding(0);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(397, 358);
+			this->pictureBox1->Size = System::Drawing::Size(500, 358);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 6;
 			this->pictureBox1->TabStop = false;
@@ -204,10 +178,11 @@ namespace CppCLRWinformsProjekt {
 			// groupBox2
 			// 
 			this->groupBox2->BackColor = System::Drawing::Color::Transparent;
+			this->groupBox2->Controls->Add(this->ledSwitch);
 			this->groupBox2->Controls->Add(this->textBox2);
-			this->groupBox2->Controls->Add(this->OffBtn);
-			this->groupBox2->Controls->Add(this->OnBtn);
 			this->groupBox2->Controls->Add(this->PortBox);
+			this->groupBox2->Controls->Add(this->keyboardControlSwitch);
+			this->groupBox2->Controls->Add(this->textBox4);
 			this->groupBox2->Controls->Add(this->textBox1);
 			this->groupBox2->Location = System::Drawing::Point(12, 25);
 			this->groupBox2->Name = L"groupBox2";
@@ -215,111 +190,27 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox2->TabIndex = 11;
 			this->groupBox2->TabStop = false;
 			// 
-			// camStopBtn
+			// ledSwitch
 			// 
-			this->camStopBtn->Anchor = System::Windows::Forms::AnchorStyles::None;
-			this->camStopBtn->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
-				static_cast<System::Int32>(static_cast<System::Byte>(250)));
-			this->camStopBtn->ForeColor = System::Drawing::Color::Black;
-			this->camStopBtn->Location = System::Drawing::Point(105, 29);
-			this->camStopBtn->Name = L"camStopBtn";
-			this->camStopBtn->Size = System::Drawing::Size(90, 23);
-			this->camStopBtn->TabIndex = 13;
-			this->camStopBtn->Text = L"Stop Camera";
-			this->camStopBtn->UseVisualStyleBackColor = false;
-			this->camStopBtn->Click += gcnew System::EventHandler(this, &Form1::camStopBtn_Click);
-			// 
-			// CamBtn
-			// 
-			this->CamBtn->Anchor = System::Windows::Forms::AnchorStyles::None;
-			this->CamBtn->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
-			this->CamBtn->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
-				static_cast<System::Int32>(static_cast<System::Byte>(250)));
-			this->CamBtn->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
-			this->CamBtn->ForeColor = System::Drawing::Color::Black;
-			this->CamBtn->Location = System::Drawing::Point(6, 29);
-			this->CamBtn->Name = L"CamBtn";
-			this->CamBtn->Size = System::Drawing::Size(90, 23);
-			this->CamBtn->TabIndex = 5;
-			this->CamBtn->Text = L"Start Camera";
-			this->CamBtn->UseVisualStyleBackColor = false;
-			this->CamBtn->Click += gcnew System::EventHandler(this, &Form1::CamBtn_Click);
-			// 
-			// linkBox
-			// 
-			this->linkBox->Anchor = System::Windows::Forms::AnchorStyles::None;
-			this->linkBox->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
-				static_cast<System::Int32>(static_cast<System::Byte>(250)));
-			this->linkBox->ForeColor = System::Drawing::Color::Black;
-			this->linkBox->FormattingEnabled = true;
-			this->linkBox->Location = System::Drawing::Point(96, 7);
-			this->linkBox->Name = L"linkBox";
-			this->linkBox->Size = System::Drawing::Size(99, 21);
-			this->linkBox->TabIndex = 7;
-			this->linkBox->Text = L"192.168.1.184";
-			this->linkBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::linkBox_SelectedIndexChanged);
-			// 
-			// textBox3
-			// 
-			this->textBox3->Anchor = System::Windows::Forms::AnchorStyles::None;
-			this->textBox3->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
-				static_cast<System::Int32>(static_cast<System::Byte>(250)));
-			this->textBox3->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->textBox3->Enabled = false;
-			this->textBox3->ForeColor = System::Drawing::Color::Black;
-			this->textBox3->Location = System::Drawing::Point(8, 10);
-			this->textBox3->Name = L"textBox3";
-			this->textBox3->Size = System::Drawing::Size(86, 13);
-			this->textBox3->TabIndex = 8;
-			this->textBox3->Text = L"Camera Ip Adress:";
-			// 
-			// groupBox1
-			// 
-			this->groupBox1->BackColor = System::Drawing::Color::Transparent;
-			this->groupBox1->Controls->Add(this->camStopBtn);
-			this->groupBox1->Controls->Add(this->textBox3);
-			this->groupBox1->Controls->Add(this->linkBox);
-			this->groupBox1->Controls->Add(this->CamBtn);
-			this->groupBox1->ForeColor = System::Drawing::Color::White;
-			this->groupBox1->Location = System::Drawing::Point(12, 107);
-			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(202, 61);
-			this->groupBox1->TabIndex = 10;
-			this->groupBox1->TabStop = false;
-			// 
-			// bunifuElipse1
-			// 
-			this->bunifuElipse1->ElipseRadius = 35;
-			this->bunifuElipse1->TargetControl = this;
-			// 
-			// bunifuImageButton1
-			// 
-			this->bunifuImageButton1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->bunifuImageButton1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"bunifuImageButton1.Image")));
-			this->bunifuImageButton1->ImageActive = nullptr;
-			this->bunifuImageButton1->Location = System::Drawing::Point(592, 12);
-			this->bunifuImageButton1->Name = L"bunifuImageButton1";
-			this->bunifuImageButton1->Size = System::Drawing::Size(25, 25);
-			this->bunifuImageButton1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
-			this->bunifuImageButton1->TabIndex = 12;
-			this->bunifuImageButton1->TabStop = false;
-			this->bunifuImageButton1->Zoom = 10;
-			this->bunifuImageButton1->Click += gcnew System::EventHandler(this, &Form1::bunifuImageButton1_Click);
-			// 
-			// bunifuDragControl1
-			// 
-			this->bunifuDragControl1->Fixed = false;
-			this->bunifuDragControl1->Horizontal = true;
-			this->bunifuDragControl1->TargetControl = this;
-			this->bunifuDragControl1->Vertical = true;
+			this->ledSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->ledSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->ledSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->ledSwitch->Location = System::Drawing::Point(163, 38);
+			this->ledSwitch->Name = L"ledSwitch";
+			this->ledSwitch->OffColor = System::Drawing::Color::Gray;
+			this->ledSwitch->OnColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(71)), static_cast<System::Int32>(static_cast<System::Byte>(202)),
+				static_cast<System::Int32>(static_cast<System::Byte>(94)));
+			this->ledSwitch->Size = System::Drawing::Size(35, 20);
+			this->ledSwitch->TabIndex = 17;
+			this->ledSwitch->Value = false;
+			this->ledSwitch->OnValueChange += gcnew System::EventHandler(this, &Form1::ledSwitch_OnValueChange);
 			// 
 			// keyboardControlSwitch
 			// 
 			this->keyboardControlSwitch->BackColor = System::Drawing::Color::Transparent;
-			this->keyboardControlSwitch->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"keyboardControlSwitch.BackgroundImage")));
 			this->keyboardControlSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->keyboardControlSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->keyboardControlSwitch->Location = System::Drawing::Point(179, 7);
+			this->keyboardControlSwitch->Location = System::Drawing::Point(85, 38);
 			this->keyboardControlSwitch->Name = L"keyboardControlSwitch";
 			this->keyboardControlSwitch->OffColor = System::Drawing::Color::Gray;
 			this->keyboardControlSwitch->OnColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(71)),
@@ -336,21 +227,58 @@ namespace CppCLRWinformsProjekt {
 			// 
 			this->textBox4->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
 				static_cast<System::Int32>(static_cast<System::Byte>(250)));
+			this->textBox4->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->textBox4->Enabled = false;
-			this->textBox4->Location = System::Drawing::Point(87, 7);
+			this->textBox4->Location = System::Drawing::Point(6, 42);
 			this->textBox4->Name = L"textBox4";
-			this->textBox4->Size = System::Drawing::Size(86, 20);
+			this->textBox4->Size = System::Drawing::Size(73, 13);
 			this->textBox4->TabIndex = 14;
 			this->textBox4->Text = L"Manual Control";
-			this->textBox4->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// linkBox
+			// 
+			this->linkBox->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
+				static_cast<System::Int32>(static_cast<System::Byte>(250)));
+			this->linkBox->ForeColor = System::Drawing::Color::Black;
+			this->linkBox->FormattingEnabled = true;
+			this->linkBox->Location = System::Drawing::Point(58, 15);
+			this->linkBox->Name = L"linkBox";
+			this->linkBox->Size = System::Drawing::Size(99, 21);
+			this->linkBox->TabIndex = 7;
+			this->linkBox->Text = L"192.168.1.184";
+			this->linkBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::linkBox_SelectedIndexChanged);
+			// 
+			// bunifuElipse1
+			// 
+			this->bunifuElipse1->ElipseRadius = 35;
+			this->bunifuElipse1->TargetControl = this;
+			// 
+			// bunifuImageButton1
+			// 
+			this->bunifuImageButton1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->bunifuImageButton1->ImageActive = nullptr;
+			this->bunifuImageButton1->Location = System::Drawing::Point(696, 12);
+			this->bunifuImageButton1->Name = L"bunifuImageButton1";
+			this->bunifuImageButton1->Size = System::Drawing::Size(25, 25);
+			this->bunifuImageButton1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
+			this->bunifuImageButton1->TabIndex = 12;
+			this->bunifuImageButton1->TabStop = false;
+			this->bunifuImageButton1->Zoom = 10;
+			this->bunifuImageButton1->Click += gcnew System::EventHandler(this, &Form1::bunifuImageButton1_Click);
+			// 
+			// bunifuDragControl1
+			// 
+			this->bunifuDragControl1->Fixed = false;
+			this->bunifuDragControl1->Horizontal = true;
+			this->bunifuDragControl1->TargetControl = this;
+			this->bunifuDragControl1->Vertical = true;
 			// 
 			// camSwitch
 			// 
 			this->camSwitch->BackColor = System::Drawing::Color::Transparent;
-			this->camSwitch->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"camSwitch.BackgroundImage")));
 			this->camSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->camSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->camSwitch->Location = System::Drawing::Point(179, 185);
+			this->camSwitch->Location = System::Drawing::Point(163, 16);
 			this->camSwitch->Name = L"camSwitch";
 			this->camSwitch->OffColor = System::Drawing::Color::Gray;
 			this->camSwitch->OnColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(71)), static_cast<System::Int32>(static_cast<System::Byte>(202)),
@@ -360,19 +288,40 @@ namespace CppCLRWinformsProjekt {
 			this->camSwitch->Value = false;
 			this->camSwitch->OnValueChange += gcnew System::EventHandler(this, &Form1::camSwitch_OnValueChange);
 			// 
+			// textBox3
+			// 
+			this->textBox3->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
+				static_cast<System::Int32>(static_cast<System::Byte>(250)));
+			this->textBox3->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox3->Enabled = false;
+			this->textBox3->Location = System::Drawing::Point(6, 19);
+			this->textBox3->Name = L"textBox3";
+			this->textBox3->Size = System::Drawing::Size(46, 13);
+			this->textBox3->TabIndex = 16;
+			this->textBox3->Text = L"CamIP:";
+			// 
+			// groupBox1
+			// 
+			this->groupBox1->BackColor = System::Drawing::Color::Transparent;
+			this->groupBox1->Controls->Add(this->textBox3);
+			this->groupBox1->Controls->Add(this->camSwitch);
+			this->groupBox1->Controls->Add(this->linkBox);
+			this->groupBox1->Location = System::Drawing::Point(12, 95);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(202, 48);
+			this->groupBox1->TabIndex = 17;
+			this->groupBox1->TabStop = false;
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Desktop;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->ClientSize = System::Drawing::Size(629, 358);
-			this->Controls->Add(this->camSwitch);
-			this->Controls->Add(this->textBox4);
-			this->Controls->Add(this->keyboardControlSwitch);
+			this->ClientSize = System::Drawing::Size(733, 358);
+			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->bunifuImageButton1);
 			this->Controls->Add(this->groupBox2);
-			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->pictureBox1);
 			this->ForeColor = System::Drawing::Color::White;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
@@ -384,11 +333,10 @@ namespace CppCLRWinformsProjekt {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bunifuImageButton1))->EndInit();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bunifuImageButton1))->EndInit();
 			this->ResumeLayout(false);
-			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -457,39 +405,8 @@ namespace CppCLRWinformsProjekt {
 		}
 	}
 
-	private: System::Void CamBtn_Click(System::Object^ sender, System::EventArgs^ e) 
-	{
-		if (camCount < 1)
-		{
-			camLink = "http://" + linkBox->Text + "/mjpeg/1";
-			cap = gcnew Emgu::CV::Capture(camLink);
-			cap->ImageGrabbed += gcnew System::EventHandler(this, &CppCLRWinformsProjekt::Form1::OnImageGrabbed);
-			cap->Start();
-			linkBox->Enabled = false;
-			camOn = true;
-			camCount++;
-		}
-		else
-		{
-			camOn = true;
-			cap->Start();
-		}
-	}
-
 	   void OnImageGrabbed(System::Object^ sender, System::EventArgs^ e);
 
-
-private: System::Void camStopBtn_Click(System::Object^ sender, System::EventArgs^ e) 
-{
-	camOn = false;
-	cap->Stop();
-	pictureBox1->Image = Drawing::Image::FromFile("ananke2.png");
-}
-private: System::Void camStartBtn_Click(System::Object^ sender, System::EventArgs^ e) 
-{
-	camOn = true;
-	cap->Start();
-}
 
 private: System::Void linkBox_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 }
@@ -502,10 +419,10 @@ private: System::Void bunifuImageButton1_Click(System::Object^ sender, System::E
 
 private: System::Void keyboardControlSwitch_OnValueChange(System::Object^ sender, System::EventArgs^ e) 
 {
-	System::Windows::Forms::MessageBox::Show("valChange");
 
 	if (keyboardControlSwitch->Value == true)
 	{
+		System::Windows::Forms::MessageBox::Show("       Manual Control Enabled! \n  \n  \n Always exercise caution \n When the robot is in motion \n Don't get caught up in emotion ", "Warning!",MessageBoxButtons::OK, MessageBoxIcon::Warning);
 		keyControl = true;
 	}
 
@@ -517,7 +434,7 @@ private: System::Void keyboardControlSwitch_OnValueChange(System::Object^ sender
 
 private: System::Void camSwitch_OnValueChange(System::Object^ sender, System::EventArgs^ e) 
 {
-	camOn != camOn;
+	camOn = camSwitch->Value;
 
 	if (camOn)
 	{
@@ -598,11 +515,45 @@ private: System::Void keyboardControlSwitch_Leave(System::Object^ sender, System
 
 private: System::Void keyboardControlSwitch_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) 
 {
-	serialPort1->Open();
-	serialPort1->WriteLine("stop");
-	serialPort1->Close();
+	if (keyControl && (e->KeyValue == (char)Keys::Up || e->KeyValue == (char)Keys::W || e->KeyValue == (char)Keys::Down || e->KeyValue == (char)Keys::S || e->KeyValue == (char)Keys::Left || e->KeyValue == (char)Keys::A || e->KeyValue == (char)Keys::Right || e->KeyValue == (char)Keys::D))
+	{
+		serialPort1->Open();
+		serialPort1->WriteLine("stop");
+		serialPort1->Close();
+	}
+
 }
 
+private: System::Void ledSwitch_OnValueChange(System::Object^ sender, System::EventArgs^ e) 
+{
+	if (ledSwitch->Value == true)
+	{
+		try
+		{
+			serialPort1->Open();
+			serialPort1->WriteLine("led on");
+			serialPort1->Close();
+		}
+		catch (Exception^ ex)
+		{
+			System::Windows::Forms::MessageBox::Show(ex->Message);
+		}
+	}
+
+	else if(ledSwitch->Value == false)
+	{
+		try
+		{
+			serialPort1->Open();
+			serialPort1->WriteLine("led off");
+			serialPort1->Close();
+		}
+		catch (Exception^ ex)
+		{
+			System::Windows::Forms::MessageBox::Show(ex->Message);
+		}
+	}
+}
 };
 }
 
