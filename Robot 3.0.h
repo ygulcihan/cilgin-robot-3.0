@@ -24,6 +24,7 @@ namespace CppCLRWinformsProjekt {
 		String^ camLink;
 		int camCount;
 		bool keyControl = false;
+		bool licensed = false;
 
 
 
@@ -50,16 +51,6 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::GroupBox^ groupBox1;
 
 
-
-
-
-
-
-
-
-
-
-
 		   System::Reflection::Assembly^ asmbly;
 	
 	public:
@@ -80,8 +71,6 @@ namespace CppCLRWinformsProjekt {
 			}
 		}
 	private: System::Windows::Forms::ComboBox^ PortBox;
-
-
 
 
 	private: System::IO::Ports::SerialPort^ serialPort1;
@@ -419,11 +408,34 @@ private: System::Void bunifuImageButton1_Click(System::Object^ sender, System::E
 
 private: System::Void keyboardControlSwitch_OnValueChange(System::Object^ sender, System::EventArgs^ e) 
 {
-
 	if (keyboardControlSwitch->Value == true)
 	{
-		System::Windows::Forms::MessageBox::Show("       Manual Control Enabled! \n  \n  \n Always exercise caution \n When the robot is in motion \n Don't get caught up in emotion ", "Warning!",MessageBoxButtons::OK, MessageBoxIcon::Warning);
-		keyControl = true;
+		if (!licensed)
+		{
+			DialogResult = System::Windows::Forms::MessageBox::Show(" Do you have a driver's license? ", "Manual Control", MessageBoxButtons::YesNoCancel, MessageBoxIcon::Question);
+			if (DialogResult == System::Windows::Forms::DialogResult::Yes)
+			{
+				keyControl = true;
+				licensed = true;
+				System::Windows::Forms::MessageBox::Show (" Always Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			}
+			else if (DialogResult == System::Windows::Forms::DialogResult::No)
+			{
+				System::Windows::Forms::MessageBox::Show("Permission Denied", "No Driver's license", MessageBoxButtons::OK, MessageBoxIcon::Stop);
+				keyboardControlSwitch->Value = false;
+			}
+			else if (DialogResult == System::Windows::Forms::DialogResult::Cancel)
+			{
+				keyboardControlSwitch->Value = false;
+			}
+		}
+
+		else if (licensed)
+		{
+			keyControl = true;
+			System::Windows::Forms::MessageBox::Show(" Always Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+		}
+
 	}
 
 	else
