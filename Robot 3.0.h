@@ -25,7 +25,7 @@ namespace CppCLRWinformsProjekt {
 		int camCount;
 		bool keyControl = false;
 		bool licensed = false;
-
+		int speed = 1;
 
 
 	private: System::Windows::Forms::GroupBox^ groupBox2;
@@ -49,6 +49,12 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::TextBox^ textBox3;
 	private: Bunifu::Framework::UI::BunifuiOSSwitch^ ledSwitch;
 	private: System::Windows::Forms::GroupBox^ groupBox1;
+
+	private: Bunifu::Framework::UI::BunifuSlider^ bunifuSlider1;
+	private: System::Windows::Forms::TextBox^ speedDesc;
+	private: System::Windows::Forms::GroupBox^ groupBox3;
+	private: System::Windows::Forms::Timer^ timer1;
+
 
 
 		   System::Reflection::Assembly^ asmbly;
@@ -111,10 +117,15 @@ namespace CppCLRWinformsProjekt {
 			this->camSwitch = (gcnew Bunifu::Framework::UI::BunifuiOSSwitch());
 			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->bunifuSlider1 = (gcnew Bunifu::Framework::UI::BunifuSlider());
+			this->speedDesc = (gcnew System::Windows::Forms::TextBox());
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->groupBox2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bunifuImageButton1))->BeginInit();
 			this->groupBox1->SuspendLayout();
+			this->groupBox3->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// PortBox
@@ -301,6 +312,54 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox1->TabIndex = 17;
 			this->groupBox1->TabStop = false;
 			// 
+			// bunifuSlider1
+			// 
+			this->bunifuSlider1->BackColor = System::Drawing::Color::Transparent;
+			this->bunifuSlider1->BackgroudColor = System::Drawing::Color::DarkGray;
+			this->bunifuSlider1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
+			this->bunifuSlider1->BorderRadius = 0;
+			this->bunifuSlider1->ForeColor = System::Drawing::Color::White;
+			this->bunifuSlider1->IndicatorColor = System::Drawing::Color::Red;
+			this->bunifuSlider1->Location = System::Drawing::Point(85, 9);
+			this->bunifuSlider1->MaximumValue = 3;
+			this->bunifuSlider1->Name = L"bunifuSlider1";
+			this->bunifuSlider1->RightToLeft = System::Windows::Forms::RightToLeft::No;
+			this->bunifuSlider1->Size = System::Drawing::Size(111, 30);
+			this->bunifuSlider1->TabIndex = 19;
+			this->bunifuSlider1->TabStop = false;
+			this->bunifuSlider1->Value = 0;
+			this->bunifuSlider1->ValueChanged += gcnew System::EventHandler(this, &Form1::bunifuSlider1_ValueChanged);
+			this->bunifuSlider1->ValueChangeComplete += gcnew System::EventHandler(this, &Form1::bunifuSlider1_ValueChangeComplete);
+			this->bunifuSlider1->Load += gcnew System::EventHandler(this, &Form1::bunifuSlider1_Load);
+			// 
+			// speedDesc
+			// 
+			this->speedDesc->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
+				static_cast<System::Int32>(static_cast<System::Byte>(250)));
+			this->speedDesc->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->speedDesc->Cursor = System::Windows::Forms::Cursors::IBeam;
+			this->speedDesc->Enabled = false;
+			this->speedDesc->Location = System::Drawing::Point(6, 15);
+			this->speedDesc->Name = L"speedDesc";
+			this->speedDesc->Size = System::Drawing::Size(73, 13);
+			this->speedDesc->TabIndex = 20;
+			this->speedDesc->Text = L"Motor Speed:";
+			// 
+			// groupBox3
+			// 
+			this->groupBox3->BackColor = System::Drawing::Color::Transparent;
+			this->groupBox3->Controls->Add(this->speedDesc);
+			this->groupBox3->Controls->Add(this->bunifuSlider1);
+			this->groupBox3->Location = System::Drawing::Point(12, 149);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(200, 40);
+			this->groupBox3->TabIndex = 21;
+			this->groupBox3->TabStop = false;
+			// 
+			// timer1
+			// 
+			this->timer1->Tick += gcnew System::EventHandler(this, &Form1::timer1_Tick);
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -308,6 +367,7 @@ namespace CppCLRWinformsProjekt {
 			this->BackColor = System::Drawing::SystemColors::Desktop;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(733, 358);
+			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->bunifuImageButton1);
 			this->Controls->Add(this->groupBox2);
@@ -325,6 +385,8 @@ namespace CppCLRWinformsProjekt {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bunifuImageButton1))->EndInit();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
+			this->groupBox3->ResumeLayout(false);
+			this->groupBox3->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -401,8 +463,15 @@ private: System::Void linkBox_SelectedIndexChanged(System::Object^ sender, Syste
 }
 
 
-private: System::Void bunifuImageButton1_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->Close();
+private: System::Void bunifuImageButton1_Click(System::Object^ sender, System::EventArgs^ e) 
+{
+	serialPort1->Open();
+	serialPort1->WriteLine("stop");
+	serialPort1->Close();
+
+	System::Windows::Forms::MessageBox::Show("Developed & Built by: Yigit Gülcihan \n \t \t      Ahmet Bal \n \t \t      Mehmet Engin Höcü \n \t \t      Mert Karaoglu \n \t \t      Kahraman Berke Çelenay", "Çilgin Robot 3.0");
+	timer1->Interval = 5;
+	timer1->Start();
 }
 
 
@@ -417,7 +486,7 @@ private: System::Void keyboardControlSwitch_OnValueChange(System::Object^ sender
 			{
 				keyControl = true;
 				licensed = true;
-				System::Windows::Forms::MessageBox::Show (" Always Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+				System::Windows::Forms::MessageBox::Show (" Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 			}
 			else if (DialogResult == System::Windows::Forms::DialogResult::No)
 			{
@@ -566,6 +635,28 @@ private: System::Void ledSwitch_OnValueChange(System::Object^ sender, System::Ev
 		}
 	}
 }
+private: System::Void bunifuSlider1_Load(System::Object^ sender, System::EventArgs^ e) 
+	{
+		bunifuSlider1->Value = 1;
+	}
+private: System::Void bunifuSlider1_ValueChanged(System::Object^ sender, System::EventArgs^ e) 
+	{
+		speed = bunifuSlider1->Value;
+	}
+private: System::Void bunifuSlider1_ValueChangeComplete(System::Object^ sender, System::EventArgs^ e) 
+	{
+		bunifuSlider1->Value = speed;
+
+		serialPort1->Open();
+		serialPort1->WriteLine("speed" + speed);
+		serialPort1->Close();
+	}
+
+private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
+{
+	this->Close();
+}
+
 };
 }
 
