@@ -26,6 +26,7 @@ namespace CppCLRWinformsProjekt {
 		bool keyControl = false;
 		bool licensed = false;
 		int speed = 1;
+		bool lineFollow = false;
 
 
 	private: System::Windows::Forms::GroupBox^ groupBox2;
@@ -54,6 +55,9 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::TextBox^ speedDesc;
 	private: System::Windows::Forms::GroupBox^ groupBox3;
 	private: System::Windows::Forms::Timer^ timer1;
+	private: System::Windows::Forms::TextBox^ textBox5;
+	private: Bunifu::Framework::UI::BunifuiOSSwitch^ lineFollowSwitch;
+	private: System::Windows::Forms::Button^ stopButton;
 
 
 
@@ -120,6 +124,9 @@ namespace CppCLRWinformsProjekt {
 			this->bunifuSlider1 = (gcnew Bunifu::Framework::UI::BunifuSlider());
 			this->speedDesc = (gcnew System::Windows::Forms::TextBox());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->stopButton = (gcnew System::Windows::Forms::Button());
+			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
+			this->lineFollowSwitch = (gcnew Bunifu::Framework::UI::BunifuiOSSwitch());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->groupBox2->SuspendLayout();
@@ -348,13 +355,52 @@ namespace CppCLRWinformsProjekt {
 			// groupBox3
 			// 
 			this->groupBox3->BackColor = System::Drawing::Color::Transparent;
+			this->groupBox3->Controls->Add(this->stopButton);
+			this->groupBox3->Controls->Add(this->textBox5);
+			this->groupBox3->Controls->Add(this->lineFollowSwitch);
 			this->groupBox3->Controls->Add(this->speedDesc);
 			this->groupBox3->Controls->Add(this->bunifuSlider1);
 			this->groupBox3->Location = System::Drawing::Point(12, 149);
 			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Size = System::Drawing::Size(200, 40);
+			this->groupBox3->Size = System::Drawing::Size(202, 64);
 			this->groupBox3->TabIndex = 21;
 			this->groupBox3->TabStop = false;
+			// 
+			// stopButton
+			// 
+			this->stopButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->stopButton->Location = System::Drawing::Point(129, 35);
+			this->stopButton->Name = L"stopButton";
+			this->stopButton->Size = System::Drawing::Size(67, 25);
+			this->stopButton->TabIndex = 22;
+			this->stopButton->UseVisualStyleBackColor = true;
+			this->stopButton->Click += gcnew System::EventHandler(this, &Form1::stopButton_Click);
+			// 
+			// textBox5
+			// 
+			this->textBox5->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox5->Enabled = false;
+			this->textBox5->Location = System::Drawing::Point(6, 42);
+			this->textBox5->Name = L"textBox5";
+			this->textBox5->ReadOnly = true;
+			this->textBox5->Size = System::Drawing::Size(55, 13);
+			this->textBox5->TabIndex = 23;
+			this->textBox5->Text = L"Follow Line";
+			// 
+			// lineFollowSwitch
+			// 
+			this->lineFollowSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->lineFollowSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->lineFollowSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->lineFollowSwitch->Location = System::Drawing::Point(67, 38);
+			this->lineFollowSwitch->Name = L"lineFollowSwitch";
+			this->lineFollowSwitch->OffColor = System::Drawing::Color::Gray;
+			this->lineFollowSwitch->OnColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(71)), static_cast<System::Int32>(static_cast<System::Byte>(202)),
+				static_cast<System::Int32>(static_cast<System::Byte>(94)));
+			this->lineFollowSwitch->Size = System::Drawing::Size(35, 20);
+			this->lineFollowSwitch->TabIndex = 22;
+			this->lineFollowSwitch->Value = false;
+			this->lineFollowSwitch->OnValueChange += gcnew System::EventHandler(this, &Form1::lineFollowSwitch_OnValueChange);
 			// 
 			// timer1
 			// 
@@ -416,6 +462,7 @@ namespace CppCLRWinformsProjekt {
 			bunifuImageButton1->Image = Drawing::Image::FromFile("exitbutton.png");
 			pictureBox1->Image = Drawing::Image::FromFile("ananke2.png");
 			BackgroundImage = Drawing::Image::FromFile("anankebg.png");
+			stopButton->BackgroundImage = Drawing::Image::FromFile("stop.png");
 
 		}
 		catch (...)
@@ -477,8 +524,27 @@ private: System::Void bunifuImageButton1_Click(System::Object^ sender, System::E
 
 private: System::Void keyboardControlSwitch_OnValueChange(System::Object^ sender, System::EventArgs^ e) 
 {
-	if (keyboardControlSwitch->Value == true)
+	if (lineFollow && keyboardControlSwitch->Value == true)
 	{
+		lineFollow = false;
+		lineFollowSwitch->Value = false;
+		licenseCheck();
+
+	}
+
+	else if (keyboardControlSwitch->Value == true)
+	{
+		licenseCheck();
+	}
+
+	else
+	{
+		keyControl = false;
+	}
+}
+
+void licenseCheck()
+{
 		if (!licensed)
 		{
 			DialogResult = System::Windows::Forms::MessageBox::Show(" Do you have a driver's license? ", "Manual Control", MessageBoxButtons::YesNoCancel, MessageBoxIcon::Question);
@@ -486,7 +552,7 @@ private: System::Void keyboardControlSwitch_OnValueChange(System::Object^ sender
 			{
 				keyControl = true;
 				licensed = true;
-				System::Windows::Forms::MessageBox::Show (" Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+				System::Windows::Forms::MessageBox::Show(" Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 			}
 			else if (DialogResult == System::Windows::Forms::DialogResult::No)
 			{
@@ -504,13 +570,6 @@ private: System::Void keyboardControlSwitch_OnValueChange(System::Object^ sender
 			keyControl = true;
 			System::Windows::Forms::MessageBox::Show(" Always Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 		}
-
-	}
-
-	else
-	{
-		keyControl = false;
-	}
 }
 
 private: System::Void camSwitch_OnValueChange(System::Object^ sender, System::EventArgs^ e) 
@@ -657,6 +716,43 @@ private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e)
 	this->Close();
 }
 
+private: System::Void lineFollowSwitch_OnValueChange(System::Object^ sender, System::EventArgs^ e) 
+	{
+		if (keyControl && lineFollowSwitch->Value == true)
+		{
+			keyControl = false;
+			keyboardControlSwitch->Value = false;
+			lineFollow = true;
+			serialPort1->Open();
+			serialPort1->WriteLine("linefollow");
+			serialPort1->Close();
+		}
+
+		else if(lineFollowSwitch->Value == true)
+		{
+			lineFollow = true;
+			serialPort1->Open();
+			serialPort1->WriteLine("linefollow");
+			serialPort1->Close();
+		}
+		else
+		{
+			lineFollow = false;
+			serialPort1->Open();
+			serialPort1->WriteLine("stop");
+			serialPort1->Close();
+		}
+	}
+private: System::Void stopButton_Click(System::Object^ sender, System::EventArgs^ e) 
+	{
+		serialPort1->Open();
+		serialPort1->WriteLine("stop");
+		serialPort1->Close();
+		keyControl = false;
+		keyboardControlSwitch->Value = false;
+		lineFollow = false;
+		lineFollowSwitch->Value = false;
+	}
 };
 }
 
