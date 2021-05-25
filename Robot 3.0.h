@@ -22,7 +22,6 @@ namespace CppCLRWinformsProjekt {
 	
 		bool camOn = false;
 		String^ camLink;
-		int camCount;
 		bool keyControl = false;
 		bool licensed = false;
 		int speed = 1;
@@ -455,7 +454,7 @@ namespace CppCLRWinformsProjekt {
 			PortBox->Items->AddRange(System::IO::Ports::SerialPort::GetPortNames());
 			PortBox->SelectedIndex = 0;
 
-			serialPort1->BaudRate = (9600);
+			serialPort1->BaudRate = (115200);
 			serialPort1->ReadTimeout = (3000);
 			serialPort1->WriteTimeout = (3000);
 
@@ -586,31 +585,22 @@ private: System::Void camSwitch_OnValueChange(System::Object^ sender, System::Ev
 	}
 }
 
-	   void camStart()
-	   {
-		   if (camCount < 1)
-		   {
-			   camLink = "http://" + linkBox->Text + "/mjpeg/1";
-			   cap = gcnew Emgu::CV::Capture(camLink);
-			   cap->ImageGrabbed += gcnew System::EventHandler(this, &CppCLRWinformsProjekt::Form1::OnImageGrabbed);
-			   cap->Start();
-			   linkBox->Enabled = false;
-			   camOn = true;
-			   camCount++;
-		   }
-		   else
-		   {
-			   camOn = true;
-			   cap->Start();
-		   }
-	   }
+void camStart()
+{
+	camLink = "http://" + linkBox->Text + "/mjpeg/1";
+	cap = gcnew Emgu::CV::Capture(camLink);
+	cap->ImageGrabbed += gcnew System::EventHandler(this, &CppCLRWinformsProjekt::Form1::OnImageGrabbed);
+	cap->Start();
+	linkBox->Enabled = false;
+	camOn = true;
+}
 
-	   void camStop()
-	   {
-		   camOn = false;
-		   cap->Stop();
-		   pictureBox1->Image = Drawing::Image::FromFile("ananke2.png");
-	   }
+void camStop()
+{
+	camOn = false;
+	cap->Stop();
+	pictureBox1->Image = Drawing::Image::FromFile("ananke2.png");
+}
 
 private: System::Void keyboardControlSwitch_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) 
 {
@@ -765,9 +755,15 @@ void CppCLRWinformsProjekt::Form1::OnImageGrabbed(System::Object^ sender, System
 		Mat^ m = gcnew Mat();
 		cap->Retrieve(m, 0);
 		if (camOn)
+		{
 			pictureBox1->Image = m->ToImage<Bgr, Byte>(false)->Bitmap;
+		}
 		else
+		{
+			delete m;
+			delete cap;
 			pictureBox1->Image = Drawing::Image::FromFile("ananke2.png");
+		}
 	}
 	catch (...)
 	{
