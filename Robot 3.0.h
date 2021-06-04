@@ -223,6 +223,7 @@ namespace CppCLRWinformsProjekt {
 				static_cast<System::Int32>(static_cast<System::Byte>(202)), static_cast<System::Int32>(static_cast<System::Byte>(94)));
 			this->keyboardControlSwitch->Size = System::Drawing::Size(35, 20);
 			this->keyboardControlSwitch->TabIndex = 13;
+			this->keyboardControlSwitch->TabStop = false;
 			this->keyboardControlSwitch->Value = false;
 			this->keyboardControlSwitch->OnValueChange += gcnew System::EventHandler(this, &Form1::keyboardControlSwitch_OnValueChange);
 			this->keyboardControlSwitch->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::keyboardControlSwitch_KeyDown);
@@ -539,6 +540,7 @@ private: System::Void keyboardControlSwitch_OnValueChange(System::Object^ sender
 	else
 	{
 		keyControl = false;
+		serialPort1->Close();
 	}
 }
 
@@ -552,6 +554,7 @@ void licenseCheck()
 				keyControl = true;
 				licensed = true;
 				System::Windows::Forms::MessageBox::Show(" Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+				serialPort1->Open();
 			}
 			else if (DialogResult == System::Windows::Forms::DialogResult::No)
 			{
@@ -568,6 +571,7 @@ void licenseCheck()
 		{
 			keyControl = true;
 			System::Windows::Forms::MessageBox::Show(" Always Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			serialPort1->Open();
 		}
 }
 
@@ -606,33 +610,24 @@ private: System::Void keyboardControlSwitch_KeyDown(System::Object^ sender, Syst
 {
 	if (keyControl)
 	{
-
 		if (e->KeyValue == (char)Keys::Up || e->KeyValue == (char)Keys::W)
 		{
-			serialPort1->Open();
 			serialPort1->WriteLine("forward");
-			serialPort1->Close();
 		}
 
 		else if (e->KeyValue == (char)Keys::Down || e->KeyValue == (char)Keys::S)
 		{
-			serialPort1->Open();
 			serialPort1->WriteLine("reverse");
-			serialPort1->Close();
 		}
 
 		else if (e->KeyValue == (char)Keys::Left || e->KeyValue == (char)Keys::A)
 		{
-			serialPort1->Open();
 			serialPort1->WriteLine("left");
-			serialPort1->Close();
 		}
 
 		else if (e->KeyValue == (char)Keys::Right || e->KeyValue == (char)Keys::D)
 		{
-			serialPort1->Open();
 			serialPort1->WriteLine("right");
-			serialPort1->Close();
 		}
 
 	}
@@ -641,15 +636,14 @@ private: System::Void keyboardControlSwitch_KeyDown(System::Object^ sender, Syst
 private: System::Void keyboardControlSwitch_Leave(System::Object^ sender, System::EventArgs^ e) 
 {
 	keyboardControlSwitch->Value = false;
+	serialPort1->Close();
 }
 
 private: System::Void keyboardControlSwitch_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) 
 {
 	if (keyControl && (e->KeyValue == (char)Keys::Up || e->KeyValue == (char)Keys::W || e->KeyValue == (char)Keys::Down || e->KeyValue == (char)Keys::S || e->KeyValue == (char)Keys::Left || e->KeyValue == (char)Keys::A || e->KeyValue == (char)Keys::Right || e->KeyValue == (char)Keys::D))
 	{
-		serialPort1->Open();
 		serialPort1->WriteLine("stop");
-		serialPort1->Close();
 	}
 
 }
