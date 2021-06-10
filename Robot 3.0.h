@@ -29,6 +29,9 @@ namespace CppCLRWinformsProjekt {
 		bool lineFollow = false;
 		bool debounced = true;
 		bool keyDown = false;
+		bool delayed = false;
+		unsigned int frame = 0;
+		unsigned int checkpoint = 0;
 
 
 
@@ -64,6 +67,10 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::Timer^ debounceTimer;
 	private: System::Windows::Forms::PictureBox^ checkpointBox;
 	private: System::Windows::Forms::GroupBox^ groupBox4;
+	private: Bunifu::Framework::UI::BunifuDragControl^ bunifuDragControl2;
+	private: Bunifu::Framework::UI::BunifuDragControl^ bunifuDragControl3;
+	private: System::Windows::Forms::Button^ button1;
+	private: System::Windows::Forms::Timer^ animationTimer;
 
 
 
@@ -137,6 +144,10 @@ namespace CppCLRWinformsProjekt {
 			this->debounceTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->checkpointBox = (gcnew System::Windows::Forms::PictureBox());
 			this->groupBox4 = (gcnew System::Windows::Forms::GroupBox());
+			this->bunifuDragControl2 = (gcnew Bunifu::Framework::UI::BunifuDragControl(this->components));
+			this->bunifuDragControl3 = (gcnew Bunifu::Framework::UI::BunifuDragControl(this->components));
+			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->animationTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->groupBox2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bunifuImageButton1))->BeginInit();
@@ -315,8 +326,8 @@ namespace CppCLRWinformsProjekt {
 			// 
 			// textBox3
 			// 
-			this->textBox3->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
-				static_cast<System::Int32>(static_cast<System::Byte>(250)));
+			this->textBox3->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(238)), static_cast<System::Int32>(static_cast<System::Byte>(238)),
+				static_cast<System::Int32>(static_cast<System::Byte>(240)));
 			this->textBox3->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->textBox3->Enabled = false;
 			this->textBox3->Location = System::Drawing::Point(6, 19);
@@ -360,8 +371,8 @@ namespace CppCLRWinformsProjekt {
 			// 
 			// speedDesc
 			// 
-			this->speedDesc->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
-				static_cast<System::Int32>(static_cast<System::Byte>(250)));
+			this->speedDesc->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(228)), static_cast<System::Int32>(static_cast<System::Byte>(228)),
+				static_cast<System::Int32>(static_cast<System::Byte>(230)));
 			this->speedDesc->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->speedDesc->Cursor = System::Windows::Forms::Cursors::IBeam;
 			this->speedDesc->Enabled = false;
@@ -399,6 +410,8 @@ namespace CppCLRWinformsProjekt {
 			// 
 			// textBox5
 			// 
+			this->textBox5->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(228)), static_cast<System::Int32>(static_cast<System::Byte>(228)),
+				static_cast<System::Int32>(static_cast<System::Byte>(230)));
 			this->textBox5->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->textBox5->Enabled = false;
 			this->textBox5->Location = System::Drawing::Point(6, 42);
@@ -455,6 +468,35 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox4->TabIndex = 23;
 			this->groupBox4->TabStop = false;
 			// 
+			// bunifuDragControl2
+			// 
+			this->bunifuDragControl2->Fixed = true;
+			this->bunifuDragControl2->Horizontal = true;
+			this->bunifuDragControl2->TargetControl = this->pictureBox1;
+			this->bunifuDragControl2->Vertical = true;
+			// 
+			// bunifuDragControl3
+			// 
+			this->bunifuDragControl3->Fixed = true;
+			this->bunifuDragControl3->Horizontal = true;
+			this->bunifuDragControl3->TargetControl = this->checkpointBox;
+			this->bunifuDragControl3->Vertical = true;
+			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(102, 242);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(99, 23);
+			this->button1->TabIndex = 24;
+			this->button1->Text = L"animationButton";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &Form1::button1_Click);
+			// 
+			// animationTimer
+			// 
+			this->animationTimer->Interval = 75;
+			this->animationTimer->Tick += gcnew System::EventHandler(this, &Form1::animationTimer_Tick);
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -462,6 +504,7 @@ namespace CppCLRWinformsProjekt {
 			this->BackColor = System::Drawing::SystemColors::Desktop;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(733, 358);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->groupBox4);
 			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->groupBox1);
@@ -798,9 +841,72 @@ private: System::Void stopButton_Click(System::Object^ sender, System::EventArgs
 	}
 
 
-};
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		if (checkpoint < 3)
+		{
+			checkpoint++;
+		}
+		else 
+		{
+			checkpoint = 0;
+			updateFrame();
+		}
+		animationTimer->Start();
+	}
+
+
+private: System::Void animationTimer_Tick(System::Object^ sender, System::EventArgs^ e) 
+{
+	
+	if (checkpoint == 1)
+	{
+		if (frame < 8)
+		{
+			frame++;
+		}
+		else
+		{
+			animationTimer->Stop();
+		}
+	}
+	else if (checkpoint == 2)
+	{
+		if (frame < 16)
+		{
+			frame++;
+		}
+		else
+		{
+			animationTimer->Stop();
+		}
+	}
+	else if (checkpoint == 3)
+	{
+		if (frame < 24)
+		{
+			frame++;
+		}
+		else
+		{
+			animationTimer->Stop();
+		}
+	}
+
+	else if (checkpoint == 0)
+	{
+		frame = 0;
+	}
+	updateFrame();
 }
 
+	   System::Void updateFrame()
+	   {
+		   checkpointBox->Image = System::Drawing::Image::FromFile("c" + frame + ".png");
+		   this->checkpointBox->SizeMode = PictureBoxSizeMode::StretchImage;
+	   }
+};
+}
 
 
 void CppCLRWinformsProjekt::Form1::OnImageGrabbed(System::Object^ sender, System::EventArgs^ e)
