@@ -17,6 +17,7 @@ namespace CppCLRWinformsProjekt {
 	using namespace std;
 
 
+
 	public ref class Form1 : public System::Windows::Forms::Form
 	{
 	
@@ -26,6 +27,9 @@ namespace CppCLRWinformsProjekt {
 		bool licensed = false;
 		int speed = 1;
 		bool lineFollow = false;
+		bool debounced = true;
+		bool keyDown = false;
+
 
 
 	private: System::Windows::Forms::GroupBox^ groupBox2;
@@ -57,6 +61,9 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::TextBox^ textBox5;
 	private: Bunifu::Framework::UI::BunifuiOSSwitch^ lineFollowSwitch;
 	private: System::Windows::Forms::Button^ stopButton;
+	private: System::Windows::Forms::Timer^ debounceTimer;
+	private: System::Windows::Forms::PictureBox^ checkpointBox;
+	private: System::Windows::Forms::GroupBox^ groupBox4;
 
 
 
@@ -127,11 +134,16 @@ namespace CppCLRWinformsProjekt {
 			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
 			this->lineFollowSwitch = (gcnew Bunifu::Framework::UI::BunifuiOSSwitch());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->debounceTimer = (gcnew System::Windows::Forms::Timer(this->components));
+			this->checkpointBox = (gcnew System::Windows::Forms::PictureBox());
+			this->groupBox4 = (gcnew System::Windows::Forms::GroupBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->groupBox2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bunifuImageButton1))->BeginInit();
 			this->groupBox1->SuspendLayout();
 			this->groupBox3->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->checkpointBox))->BeginInit();
+			this->groupBox4->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// PortBox
@@ -143,6 +155,7 @@ namespace CppCLRWinformsProjekt {
 			this->PortBox->Name = L"PortBox";
 			this->PortBox->Size = System::Drawing::Size(109, 21);
 			this->PortBox->TabIndex = 0;
+			this->PortBox->TabStop = false;
 			this->PortBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::comboBox1_SelectedIndexChanged);
 			// 
 			// textBox1
@@ -156,6 +169,7 @@ namespace CppCLRWinformsProjekt {
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(86, 13);
 			this->textBox1->TabIndex = 3;
+			this->textBox1->TabStop = false;
 			this->textBox1->Text = L"Select Com Port:";
 			// 
 			// textBox2
@@ -163,6 +177,7 @@ namespace CppCLRWinformsProjekt {
 			this->textBox2->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(248)), static_cast<System::Int32>(static_cast<System::Byte>(248)),
 				static_cast<System::Int32>(static_cast<System::Byte>(250)));
 			this->textBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->textBox2->Enabled = false;
 			this->textBox2->ForeColor = System::Drawing::Color::Black;
 			this->textBox2->Location = System::Drawing::Point(128, 42);
 			this->textBox2->Name = L"textBox2";
@@ -208,6 +223,7 @@ namespace CppCLRWinformsProjekt {
 				static_cast<System::Int32>(static_cast<System::Byte>(94)));
 			this->ledSwitch->Size = System::Drawing::Size(35, 20);
 			this->ledSwitch->TabIndex = 17;
+			this->ledSwitch->TabStop = false;
 			this->ledSwitch->Value = false;
 			this->ledSwitch->OnValueChange += gcnew System::EventHandler(this, &Form1::ledSwitch_OnValueChange);
 			// 
@@ -252,6 +268,7 @@ namespace CppCLRWinformsProjekt {
 			this->linkBox->Name = L"linkBox";
 			this->linkBox->Size = System::Drawing::Size(99, 21);
 			this->linkBox->TabIndex = 7;
+			this->linkBox->TabStop = false;
 			this->linkBox->Text = L"192.168.1.184";
 			this->linkBox->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::linkBox_SelectedIndexChanged);
 			// 
@@ -292,6 +309,7 @@ namespace CppCLRWinformsProjekt {
 				static_cast<System::Int32>(static_cast<System::Byte>(94)));
 			this->camSwitch->Size = System::Drawing::Size(35, 20);
 			this->camSwitch->TabIndex = 15;
+			this->camSwitch->TabStop = false;
 			this->camSwitch->Value = false;
 			this->camSwitch->OnValueChange += gcnew System::EventHandler(this, &Form1::camSwitch_OnValueChange);
 			// 
@@ -305,6 +323,7 @@ namespace CppCLRWinformsProjekt {
 			this->textBox3->Name = L"textBox3";
 			this->textBox3->Size = System::Drawing::Size(46, 13);
 			this->textBox3->TabIndex = 16;
+			this->textBox3->TabStop = false;
 			this->textBox3->Text = L"CamIP:";
 			// 
 			// groupBox1
@@ -313,7 +332,7 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox1->Controls->Add(this->textBox3);
 			this->groupBox1->Controls->Add(this->camSwitch);
 			this->groupBox1->Controls->Add(this->linkBox);
-			this->groupBox1->Location = System::Drawing::Point(12, 95);
+			this->groupBox1->Location = System::Drawing::Point(12, 110);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(202, 48);
 			this->groupBox1->TabIndex = 17;
@@ -350,6 +369,7 @@ namespace CppCLRWinformsProjekt {
 			this->speedDesc->Name = L"speedDesc";
 			this->speedDesc->Size = System::Drawing::Size(73, 13);
 			this->speedDesc->TabIndex = 20;
+			this->speedDesc->TabStop = false;
 			this->speedDesc->Text = L"Motor Speed:";
 			// 
 			// groupBox3
@@ -360,7 +380,7 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox3->Controls->Add(this->lineFollowSwitch);
 			this->groupBox3->Controls->Add(this->speedDesc);
 			this->groupBox3->Controls->Add(this->bunifuSlider1);
-			this->groupBox3->Location = System::Drawing::Point(12, 149);
+			this->groupBox3->Location = System::Drawing::Point(12, 176);
 			this->groupBox3->Name = L"groupBox3";
 			this->groupBox3->Size = System::Drawing::Size(202, 64);
 			this->groupBox3->TabIndex = 21;
@@ -373,6 +393,7 @@ namespace CppCLRWinformsProjekt {
 			this->stopButton->Name = L"stopButton";
 			this->stopButton->Size = System::Drawing::Size(67, 25);
 			this->stopButton->TabIndex = 22;
+			this->stopButton->TabStop = false;
 			this->stopButton->UseVisualStyleBackColor = true;
 			this->stopButton->Click += gcnew System::EventHandler(this, &Form1::stopButton_Click);
 			// 
@@ -385,6 +406,7 @@ namespace CppCLRWinformsProjekt {
 			this->textBox5->ReadOnly = true;
 			this->textBox5->Size = System::Drawing::Size(55, 13);
 			this->textBox5->TabIndex = 23;
+			this->textBox5->TabStop = false;
 			this->textBox5->Text = L"Follow Line";
 			// 
 			// lineFollowSwitch
@@ -399,12 +421,39 @@ namespace CppCLRWinformsProjekt {
 				static_cast<System::Int32>(static_cast<System::Byte>(94)));
 			this->lineFollowSwitch->Size = System::Drawing::Size(35, 20);
 			this->lineFollowSwitch->TabIndex = 22;
+			this->lineFollowSwitch->TabStop = false;
 			this->lineFollowSwitch->Value = false;
 			this->lineFollowSwitch->OnValueChange += gcnew System::EventHandler(this, &Form1::lineFollowSwitch_OnValueChange);
 			// 
 			// timer1
 			// 
+			this->timer1->Interval = 1000;
 			this->timer1->Tick += gcnew System::EventHandler(this, &Form1::timer1_Tick);
+			// 
+			// debounceTimer
+			// 
+			this->debounceTimer->Interval = 1000;
+			this->debounceTimer->Tick += gcnew System::EventHandler(this, &Form1::debounceTimer_Tick);
+			// 
+			// checkpointBox
+			// 
+			this->checkpointBox->BackColor = System::Drawing::SystemColors::Desktop;
+			this->checkpointBox->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->checkpointBox->Location = System::Drawing::Point(2, 8);
+			this->checkpointBox->Name = L"checkpointBox";
+			this->checkpointBox->Size = System::Drawing::Size(202, 64);
+			this->checkpointBox->TabIndex = 22;
+			this->checkpointBox->TabStop = false;
+			// 
+			// groupBox4
+			// 
+			this->groupBox4->BackColor = System::Drawing::Color::Transparent;
+			this->groupBox4->Controls->Add(this->checkpointBox);
+			this->groupBox4->Location = System::Drawing::Point(10, 261);
+			this->groupBox4->Name = L"groupBox4";
+			this->groupBox4->Size = System::Drawing::Size(206, 75);
+			this->groupBox4->TabIndex = 23;
+			this->groupBox4->TabStop = false;
 			// 
 			// Form1
 			// 
@@ -413,6 +462,7 @@ namespace CppCLRWinformsProjekt {
 			this->BackColor = System::Drawing::SystemColors::Desktop;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(733, 358);
+			this->Controls->Add(this->groupBox4);
 			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->bunifuImageButton1);
@@ -433,6 +483,8 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox1->PerformLayout();
 			this->groupBox3->ResumeLayout(false);
 			this->groupBox3->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->checkpointBox))->EndInit();
+			this->groupBox4->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
@@ -441,7 +493,18 @@ namespace CppCLRWinformsProjekt {
 		{
 			try
 			{
-				serialPort1->PortName = PortBox->Text;
+				if (serialPort1->IsOpen == true)
+				{
+					serialPort1->Close();
+					serialPort1->PortName = PortBox->Text;
+					serialPort1->Open();
+				}
+
+				else
+				{
+					serialPort1->PortName = PortBox->Text;
+				}
+				
 			}
 			catch (Exception^ ex)
 			{
@@ -456,13 +519,15 @@ namespace CppCLRWinformsProjekt {
 			PortBox->SelectedIndex = 0;
 
 			serialPort1->BaudRate = (115200);
-			serialPort1->ReadTimeout = (3000);
-			serialPort1->WriteTimeout = (3000);
+			serialPort1->ReadTimeout = (1000);
+			serialPort1->WriteTimeout = (1000);
+			serialPort1->Open();
 
 			bunifuImageButton1->Image = Drawing::Image::FromFile("exitbutton.png");
-			pictureBox1->Image = Drawing::Image::FromFile("ananke2.png");
-			BackgroundImage = Drawing::Image::FromFile("anankebg.png");
+			pictureBox1->Image = Drawing::Image::FromFile("cam.png");
+			BackgroundImage = Drawing::Image::FromFile("background.png");
 			stopButton->BackgroundImage = Drawing::Image::FromFile("stop.png");
+			checkpointBox->BackgroundImage = Drawing::Image::FromFile("c0.png");
 
 		}
 		catch (...)
@@ -478,9 +543,7 @@ namespace CppCLRWinformsProjekt {
 	{
 		try
 		{
-			serialPort1->Open();
 			serialPort1->WriteLine("led on");
-			serialPort1->Close();
 		}
 
 		catch (Exception^ ex)
@@ -492,9 +555,7 @@ namespace CppCLRWinformsProjekt {
 	{
 		try
 		{
-			serialPort1->Open();
 			serialPort1->WriteLine("led off");
-			serialPort1->Close();
 		}
 
 		catch (Exception^ ex)
@@ -512,9 +573,7 @@ private: System::Void linkBox_SelectedIndexChanged(System::Object^ sender, Syste
 
 private: System::Void bunifuImageButton1_Click(System::Object^ sender, System::EventArgs^ e) 
 {
-	serialPort1->Open();
 	serialPort1->WriteLine("stop");
-	serialPort1->Close();
 
 	System::Windows::Forms::MessageBox::Show("Developed & Built by: Yigit Gülcihan \n \t \t      Ahmet Bal \n \t \t      Mehmet Engin Höcü \n \t \t      Mert Karaoglu \n \t \t      Kahraman Berke Çelenay", "Çilgin Robot 3.0");
 	timer1->Interval = 5;
@@ -540,7 +599,6 @@ private: System::Void keyboardControlSwitch_OnValueChange(System::Object^ sender
 	else
 	{
 		keyControl = false;
-		serialPort1->Close();
 	}
 }
 
@@ -554,7 +612,6 @@ void licenseCheck()
 				keyControl = true;
 				licensed = true;
 				System::Windows::Forms::MessageBox::Show(" Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
-				serialPort1->Open();
 			}
 			else if (DialogResult == System::Windows::Forms::DialogResult::No)
 			{
@@ -571,7 +628,6 @@ void licenseCheck()
 		{
 			keyControl = true;
 			System::Windows::Forms::MessageBox::Show(" Always Beware of Robot's Surroundings ", "Manual Control Enabled", MessageBoxButtons::OK, MessageBoxIcon::Warning);
-			serialPort1->Open();
 		}
 }
 
@@ -610,33 +666,48 @@ private: System::Void keyboardControlSwitch_KeyDown(System::Object^ sender, Syst
 {
 	if (keyControl)
 	{
-		if (e->KeyValue == (char)Keys::Up || e->KeyValue == (char)Keys::W)
+		if ((e->KeyValue == (char)Keys::Up || e->KeyValue == (char)Keys::W) && !keyDown)
 		{
 			serialPort1->WriteLine("forward");
+			keyDown = true;
 		}
 
-		else if (e->KeyValue == (char)Keys::Down || e->KeyValue == (char)Keys::S)
+		else if ((e->KeyValue == (char)Keys::Down || e->KeyValue == (char)Keys::S) && !keyDown)
 		{
 			serialPort1->WriteLine("reverse");
+			keyDown = true;
 		}
 
-		else if (e->KeyValue == (char)Keys::Left || e->KeyValue == (char)Keys::A)
+		else if ((e->KeyValue == (char)Keys::Left || e->KeyValue == (char)Keys::A) && !keyDown)
 		{
 			serialPort1->WriteLine("left");
+			keyDown = true;
 		}
 
-		else if (e->KeyValue == (char)Keys::Right || e->KeyValue == (char)Keys::D)
+		else if ((e->KeyValue == (char)Keys::Right || e->KeyValue == (char)Keys::D) && !keyDown)
 		{
 			serialPort1->WriteLine("right");
+			keyDown = true;
 		}
 
 	}
 }
 
+	   void debounce(unsigned int delayTime)
+	   {
+		   debounced = false;
+		   debounceTimer->Interval = delayTime;
+		   debounceTimer->Start();
+	   }
+
+private: System::Void debounceTimer_Tick(System::Object^ sender, System::EventArgs^ e)
+{
+	debounced = true;
+	debounceTimer->Stop();
+}
 private: System::Void keyboardControlSwitch_Leave(System::Object^ sender, System::EventArgs^ e) 
 {
 	keyboardControlSwitch->Value = false;
-	serialPort1->Close();
 }
 
 private: System::Void keyboardControlSwitch_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) 
@@ -644,6 +715,7 @@ private: System::Void keyboardControlSwitch_KeyUp(System::Object^ sender, System
 	if (keyControl && (e->KeyValue == (char)Keys::Up || e->KeyValue == (char)Keys::W || e->KeyValue == (char)Keys::Down || e->KeyValue == (char)Keys::S || e->KeyValue == (char)Keys::Left || e->KeyValue == (char)Keys::A || e->KeyValue == (char)Keys::Right || e->KeyValue == (char)Keys::D))
 	{
 		serialPort1->WriteLine("stop");
+		keyDown = false;
 	}
 
 }
@@ -654,9 +726,7 @@ private: System::Void ledSwitch_OnValueChange(System::Object^ sender, System::Ev
 	{
 		try
 		{
-			serialPort1->Open();
 			serialPort1->WriteLine("led on");
-			serialPort1->Close();
 		}
 		catch (Exception^ ex)
 		{
@@ -668,9 +738,7 @@ private: System::Void ledSwitch_OnValueChange(System::Object^ sender, System::Ev
 	{
 		try
 		{
-			serialPort1->Open();
 			serialPort1->WriteLine("led off");
-			serialPort1->Close();
 		}
 		catch (Exception^ ex)
 		{
@@ -690,13 +758,12 @@ private: System::Void bunifuSlider1_ValueChangeComplete(System::Object^ sender, 
 	{
 		bunifuSlider1->Value = speed;
 
-		serialPort1->Open();
 		serialPort1->WriteLine("speed" + speed);
-		serialPort1->Close();
 	}
 
 private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
 {
+	serialPort1->Close();
 	this->Close();
 }
 
@@ -707,36 +774,30 @@ private: System::Void lineFollowSwitch_OnValueChange(System::Object^ sender, Sys
 			keyControl = false;
 			keyboardControlSwitch->Value = false;
 			lineFollow = true;
-			serialPort1->Open();
-			serialPort1->WriteLine("linefollow");
-			serialPort1->Close();
+			serialPort1->WriteLine("lineFollow");
 		}
 
 		else if(lineFollowSwitch->Value == true)
 		{
 			lineFollow = true;
-			serialPort1->Open();
-			serialPort1->WriteLine("linefollow");
-			serialPort1->Close();
+			serialPort1->WriteLine("lineFollow");
 		}
 		else
 		{
 			lineFollow = false;
-			serialPort1->Open();
 			serialPort1->WriteLine("stop");
-			serialPort1->Close();
 		}
 	}
 private: System::Void stopButton_Click(System::Object^ sender, System::EventArgs^ e) 
 	{
-		serialPort1->Open();
 		serialPort1->WriteLine("stop");
-		serialPort1->Close();
 		keyControl = false;
 		keyboardControlSwitch->Value = false;
 		lineFollow = false;
 		lineFollowSwitch->Value = false;
 	}
+
+
 };
 }
 

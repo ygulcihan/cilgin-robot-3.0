@@ -182,8 +182,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />
-    <Image Include="bitmap1.bmp" />
-    <Image Include="matrix bg.jpg" />
     <Image Include="resourcez\exit button.png" />
   </ItemGroup>
   <ItemGroup>

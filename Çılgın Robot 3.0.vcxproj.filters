@@ -51,12 +51,6 @@
     <Image Include="app.ico">
       <Filter>Resources</Filter>
     </Image>
-    <Image Include="matrix bg.jpg">
-      <Filter>Resources</Filter>
-    </Image>
-    <Image Include="bitmap1.bmp">
-      <Filter>Resources</Filter>
-    </Image>
     <Image Include="resourcez\exit button.png">
       <Filter>Resources</Filter>
     </Image>
