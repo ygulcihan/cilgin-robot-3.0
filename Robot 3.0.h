@@ -702,7 +702,7 @@ void camStop()
 {
 	camOn = false;
 	cap->Stop();
-	pictureBox1->Image = Drawing::Image::FromFile("ananke2.png");
+	pictureBox1->Image = Drawing::Image::FromFile("cam.png");
 }
 
 private: System::Void keyboardControlSwitch_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) 
