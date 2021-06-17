@@ -71,6 +71,7 @@ namespace CppCLRWinformsProjekt {
 	private: Bunifu::Framework::UI::BunifuDragControl^ bunifuDragControl3;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Timer^ animationTimer;
+	private: System::Windows::Forms::Timer^ serialTimer;
 
 
 
@@ -148,6 +149,7 @@ namespace CppCLRWinformsProjekt {
 			this->bunifuDragControl3 = (gcnew Bunifu::Framework::UI::BunifuDragControl(this->components));
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->animationTimer = (gcnew System::Windows::Forms::Timer(this->components));
+			this->serialTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->groupBox2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bunifuImageButton1))->BeginInit();
@@ -225,6 +227,7 @@ namespace CppCLRWinformsProjekt {
 			// ledSwitch
 			// 
 			this->ledSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->ledSwitch->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"ledSwitch.BackgroundImage")));
 			this->ledSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ledSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->ledSwitch->Location = System::Drawing::Point(163, 38);
@@ -241,6 +244,7 @@ namespace CppCLRWinformsProjekt {
 			// keyboardControlSwitch
 			// 
 			this->keyboardControlSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->keyboardControlSwitch->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"keyboardControlSwitch.BackgroundImage")));
 			this->keyboardControlSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->keyboardControlSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->keyboardControlSwitch->Location = System::Drawing::Point(85, 38);
@@ -291,6 +295,7 @@ namespace CppCLRWinformsProjekt {
 			// bunifuImageButton1
 			// 
 			this->bunifuImageButton1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->bunifuImageButton1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"bunifuImageButton1.Image")));
 			this->bunifuImageButton1->ImageActive = nullptr;
 			this->bunifuImageButton1->Location = System::Drawing::Point(696, 12);
 			this->bunifuImageButton1->Name = L"bunifuImageButton1";
@@ -311,6 +316,7 @@ namespace CppCLRWinformsProjekt {
 			// camSwitch
 			// 
 			this->camSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->camSwitch->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"camSwitch.BackgroundImage")));
 			this->camSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->camSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->camSwitch->Location = System::Drawing::Point(163, 16);
@@ -425,6 +431,7 @@ namespace CppCLRWinformsProjekt {
 			// lineFollowSwitch
 			// 
 			this->lineFollowSwitch->BackColor = System::Drawing::Color::Transparent;
+			this->lineFollowSwitch->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"lineFollowSwitch.BackgroundImage")));
 			this->lineFollowSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->lineFollowSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->lineFollowSwitch->Location = System::Drawing::Point(67, 38);
@@ -496,6 +503,11 @@ namespace CppCLRWinformsProjekt {
 			// 
 			this->animationTimer->Interval = 75;
 			this->animationTimer->Tick += gcnew System::EventHandler(this, &Form1::animationTimer_Tick);
+			// 
+			// serialTimer
+			// 
+			this->serialTimer->Interval = 2000;
+			this->serialTimer->Tick += gcnew System::EventHandler(this, &Form1::serialTimer_Tick);
 			// 
 			// Form1
 			// 
@@ -572,6 +584,7 @@ namespace CppCLRWinformsProjekt {
 			stopButton->BackgroundImage = Drawing::Image::FromFile("stop.png");
 			checkpointBox->BackgroundImage = Drawing::Image::FromFile("c0.png");
 
+			serialTimer->Start();
 		}
 		catch (...)
 		{
@@ -905,6 +918,11 @@ private: System::Void animationTimer_Tick(System::Object^ sender, System::EventA
 		   checkpointBox->Image = System::Drawing::Image::FromFile("c" + frame + ".png");
 		   this->checkpointBox->SizeMode = PictureBoxSizeMode::StretchImage;
 	   }
+private: System::Void serialTimer_Tick(System::Object^ sender, System::EventArgs^ e) 
+{
+
+}
+
 };
 }
 
