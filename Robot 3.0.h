@@ -25,7 +25,6 @@ namespace CppCLRWinformsProjekt {
 		String^ camLink;
 		bool keyControl = false;
 		bool licensed = false;
-		int speed = 1;
 		bool lineFollow = false;
 		bool debounced = true;
 		bool keyDown = false;
@@ -34,19 +33,14 @@ namespace CppCLRWinformsProjekt {
 		unsigned int checkpoint = 0;
 		bool exceptionShown = false;
 		unsigned int prevCheckpoint = 0;
+		unsigned int distance;
+		bool objDetected = false;
 
 
 
 	private: System::Windows::Forms::GroupBox^ groupBox2;
-
-
-
-
 	private: System::Windows::Forms::ComboBox^ linkBox;
-
-
 	private: Bunifu::Framework::UI::BunifuElipse^ bunifuElipse1;
-
 
 		   Emgu::CV::Capture^ cap;
 	private: Bunifu::Framework::UI::BunifuImageButton^ bunifuImageButton1;
@@ -59,8 +53,6 @@ namespace CppCLRWinformsProjekt {
 	private: Bunifu::Framework::UI::BunifuiOSSwitch^ ledSwitch;
 	private: System::Windows::Forms::GroupBox^ groupBox1;
 
-	private: Bunifu::Framework::UI::BunifuSlider^ bunifuSlider1;
-	private: System::Windows::Forms::TextBox^ speedDesc;
 	private: System::Windows::Forms::GroupBox^ groupBox3;
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::Windows::Forms::TextBox^ textBox5;
@@ -74,11 +66,7 @@ namespace CppCLRWinformsProjekt {
 
 	private: System::Windows::Forms::Timer^ animationTimer;
 	private: System::Windows::Forms::Timer^ serialTimer;
-
-
-
-
-
+	private: System::Windows::Forms::PictureBox^ objectPicBox;
 
 		   System::Reflection::Assembly^ asmbly;
 	
@@ -140,8 +128,6 @@ namespace CppCLRWinformsProjekt {
 			this->camSwitch = (gcnew Bunifu::Framework::UI::BunifuiOSSwitch());
 			this->textBox3 = (gcnew System::Windows::Forms::TextBox());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->bunifuSlider1 = (gcnew Bunifu::Framework::UI::BunifuSlider());
-			this->speedDesc = (gcnew System::Windows::Forms::TextBox());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
 			this->stopButton = (gcnew System::Windows::Forms::Button());
 			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
@@ -154,6 +140,7 @@ namespace CppCLRWinformsProjekt {
 			this->bunifuDragControl3 = (gcnew Bunifu::Framework::UI::BunifuDragControl(this->components));
 			this->animationTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->serialTimer = (gcnew System::Windows::Forms::Timer(this->components));
+			this->objectPicBox = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->groupBox2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bunifuImageButton1))->BeginInit();
@@ -161,6 +148,7 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox3->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->checkpointBox))->BeginInit();
 			this->groupBox4->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->objectPicBox))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// PortBox
@@ -355,58 +343,23 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox1->TabIndex = 17;
 			this->groupBox1->TabStop = false;
 			// 
-			// bunifuSlider1
-			// 
-			this->bunifuSlider1->BackColor = System::Drawing::Color::Transparent;
-			this->bunifuSlider1->BackgroudColor = System::Drawing::Color::DarkGray;
-			this->bunifuSlider1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
-			this->bunifuSlider1->BorderRadius = 0;
-			this->bunifuSlider1->ForeColor = System::Drawing::Color::White;
-			this->bunifuSlider1->IndicatorColor = System::Drawing::Color::Red;
-			this->bunifuSlider1->Location = System::Drawing::Point(85, 9);
-			this->bunifuSlider1->MaximumValue = 3;
-			this->bunifuSlider1->Name = L"bunifuSlider1";
-			this->bunifuSlider1->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->bunifuSlider1->Size = System::Drawing::Size(111, 30);
-			this->bunifuSlider1->TabIndex = 19;
-			this->bunifuSlider1->TabStop = false;
-			this->bunifuSlider1->Value = 0;
-			this->bunifuSlider1->ValueChanged += gcnew System::EventHandler(this, &Form1::bunifuSlider1_ValueChanged);
-			this->bunifuSlider1->ValueChangeComplete += gcnew System::EventHandler(this, &Form1::bunifuSlider1_ValueChangeComplete);
-			this->bunifuSlider1->Load += gcnew System::EventHandler(this, &Form1::bunifuSlider1_Load);
-			// 
-			// speedDesc
-			// 
-			this->speedDesc->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(228)), static_cast<System::Int32>(static_cast<System::Byte>(228)),
-				static_cast<System::Int32>(static_cast<System::Byte>(230)));
-			this->speedDesc->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->speedDesc->Cursor = System::Windows::Forms::Cursors::IBeam;
-			this->speedDesc->Enabled = false;
-			this->speedDesc->Location = System::Drawing::Point(6, 15);
-			this->speedDesc->Name = L"speedDesc";
-			this->speedDesc->Size = System::Drawing::Size(73, 13);
-			this->speedDesc->TabIndex = 20;
-			this->speedDesc->TabStop = false;
-			this->speedDesc->Text = L"Motor Speed:";
-			// 
 			// groupBox3
 			// 
 			this->groupBox3->BackColor = System::Drawing::Color::Transparent;
+			this->groupBox3->Controls->Add(this->objectPicBox);
 			this->groupBox3->Controls->Add(this->stopButton);
 			this->groupBox3->Controls->Add(this->textBox5);
 			this->groupBox3->Controls->Add(this->lineFollowSwitch);
-			this->groupBox3->Controls->Add(this->speedDesc);
-			this->groupBox3->Controls->Add(this->bunifuSlider1);
-			this->groupBox3->Location = System::Drawing::Point(12, 176);
+			this->groupBox3->Location = System::Drawing::Point(12, 174);
 			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Size = System::Drawing::Size(202, 64);
+			this->groupBox3->Size = System::Drawing::Size(202, 70);
 			this->groupBox3->TabIndex = 21;
 			this->groupBox3->TabStop = false;
 			// 
 			// stopButton
 			// 
 			this->stopButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->stopButton->Location = System::Drawing::Point(129, 35);
+			this->stopButton->Location = System::Drawing::Point(128, 9);
 			this->stopButton->Name = L"stopButton";
 			this->stopButton->Size = System::Drawing::Size(67, 25);
 			this->stopButton->TabIndex = 22;
@@ -420,7 +373,7 @@ namespace CppCLRWinformsProjekt {
 				static_cast<System::Int32>(static_cast<System::Byte>(230)));
 			this->textBox5->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->textBox5->Enabled = false;
-			this->textBox5->Location = System::Drawing::Point(6, 42);
+			this->textBox5->Location = System::Drawing::Point(6, 15);
 			this->textBox5->Name = L"textBox5";
 			this->textBox5->ReadOnly = true;
 			this->textBox5->Size = System::Drawing::Size(55, 13);
@@ -433,7 +386,7 @@ namespace CppCLRWinformsProjekt {
 			this->lineFollowSwitch->BackColor = System::Drawing::Color::Transparent;
 			this->lineFollowSwitch->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->lineFollowSwitch->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->lineFollowSwitch->Location = System::Drawing::Point(67, 38);
+			this->lineFollowSwitch->Location = System::Drawing::Point(67, 11);
 			this->lineFollowSwitch->Name = L"lineFollowSwitch";
 			this->lineFollowSwitch->OffColor = System::Drawing::Color::Gray;
 			this->lineFollowSwitch->OnColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(71)), static_cast<System::Int32>(static_cast<System::Byte>(202)),
@@ -498,6 +451,14 @@ namespace CppCLRWinformsProjekt {
 			this->serialTimer->Interval = 1500;
 			this->serialTimer->Tick += gcnew System::EventHandler(this, &Form1::serialTimer_Tick);
 			// 
+			// objectPicBox
+			// 
+			this->objectPicBox->Location = System::Drawing::Point(6, 40);
+			this->objectPicBox->Name = L"objectPicBox";
+			this->objectPicBox->Size = System::Drawing::Size(189, 24);
+			this->objectPicBox->TabIndex = 24;
+			this->objectPicBox->TabStop = false;
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -528,6 +489,7 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox3->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->checkpointBox))->EndInit();
 			this->groupBox4->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->objectPicBox))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -572,6 +534,8 @@ namespace CppCLRWinformsProjekt {
 			BackgroundImage = Drawing::Image::FromFile("background.png");
 			stopButton->BackgroundImage = Drawing::Image::FromFile("stop.png");
 			checkpointBox->BackgroundImage = Drawing::Image::FromFile("c0.png");
+			objectPicBox->Image = Drawing::Image::FromFile("objBackground.png");
+			this->objectPicBox->SizeMode = PictureBoxSizeMode::StretchImage;
 		}
 		catch (...)
 		{
@@ -789,20 +753,6 @@ private: System::Void ledSwitch_OnValueChange(System::Object^ sender, System::Ev
 		}
 	}
 }
-private: System::Void bunifuSlider1_Load(System::Object^ sender, System::EventArgs^ e) 
-	{
-		bunifuSlider1->Value = 1;
-	}
-private: System::Void bunifuSlider1_ValueChanged(System::Object^ sender, System::EventArgs^ e) 
-	{
-		speed = bunifuSlider1->Value;
-	}
-private: System::Void bunifuSlider1_ValueChangeComplete(System::Object^ sender, System::EventArgs^ e) 
-	{
-		bunifuSlider1->Value = speed;
-
-		serialPort1->WriteLine("speed" + speed);
-	}
 
 private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
 {
@@ -855,8 +805,6 @@ private: System::Void animationTimer_Tick(System::Object^ sender, System::EventA
 		decrementCheckpoint();
 		updateFrame();
 	}
-
-	
 }
 
 	   System::Void decrementCheckpoint()
@@ -959,22 +907,36 @@ private: System::Void serialTimer_Tick(System::Object^ sender, System::EventArgs
 	{
 		String^ rfBuffer = serialPort1->ReadExisting();
 
-		if (rfBuffer == "c1")
+		if (rfBuffer == "c1x")
 		{
 			prevCheckpoint = checkpoint;
 			checkpoint = 1;
 		}
 
-		if (rfBuffer == "c2")
+		if (rfBuffer == "c2x")
 		{
 			prevCheckpoint = checkpoint;
 			checkpoint = 2;
 		}
 
-		if (rfBuffer == "c3")
+		if (rfBuffer == "c3x")
 		{
 			prevCheckpoint = checkpoint;
 			checkpoint = 3;
+		}
+
+		if (rfBuffer == "stp")
+		{
+			serialPort1->WriteLine("stop");
+			lineFollowSwitch->Value = false;
+			objectPicBox->Image = System::Drawing::Image::FromFile("objDetected.png");
+			this->objectPicBox->SizeMode = PictureBoxSizeMode::StretchImage;
+		}
+
+		if (rfBuffer == "clr")
+		{
+			objectPicBox->Image = System::Drawing::Image::FromFile("pathClear.png");
+			this->objectPicBox->SizeMode = PictureBoxSizeMode::StretchImage;
 		}
 
 		animationTimer->Start();
